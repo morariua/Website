@@ -20,22 +20,24 @@ export default async function ProjectsPage() {
     return acc;
   }, {} as Record<string, number>);
 
-  const featured = allProjects.find((project) => project.slug === "unkey")!;
-  const top2 = allProjects.find((project) => project.slug === "planetfall")!;
-  const top3 = allProjects.find((project) => project.slug === "highstorm")!;
+  const featured = allProjects.find((project) => project.slug === "Nvidea Stock Predictor") || allProjects[0];
+  const top2 = allProjects.find((project) => project.slug === "planetfall") || allProjects[1];
+  const top3 = allProjects.find((project) => project.slug === "highstorm") || allProjects[2];
+  
   const sorted = allProjects
-    .filter((p) => p.published)
+    .filter((p) => p.slug && p.published) // Skip projects without slug or published flag
     .filter(
       (project) =>
-        project.slug !== featured.slug &&
-        project.slug !== top2.slug &&
-        project.slug !== top3.slug,
+        project.slug !== featured?.slug &&
+        project.slug !== top2?.slug &&
+        project.slug !== top3?.slug,
     )
     .sort(
       (a, b) =>
         new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
         new Date(a.date ?? Number.POSITIVE_INFINITY).getTime(),
     );
+  
 
   return (
     <div className="relative pb-16">
