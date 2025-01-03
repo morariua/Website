@@ -22,7 +22,9 @@ export default async function incr(req: NextRequest): Promise<NextResponse> {
   if (!slug) {
     return new NextResponse("Slug not found", { status: 400 });
   }
-  const ip = req.ip;
+
+  // Get the IP address from the headers
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip');
   if (ip) {
     // Hash the IP in order to not store it directly in your db.
     const buf = await crypto.subtle.digest(
@@ -39,9 +41,10 @@ export default async function incr(req: NextRequest): Promise<NextResponse> {
       ex: 24 * 60 * 60,
     });
     if (!isNew) {
-      new NextResponse(null, { status: 202 });
+      return new NextResponse(null, { status: 202 });
     }
   }
+
   await redis.incr(["pageviews", "projects", slug].join(":"));
   return new NextResponse(null, { status: 202 });
 }
