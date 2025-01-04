@@ -51,7 +51,7 @@ export default function Particles({ className = "" }: ParticlesProps) {
 		const newColor = Math.floor((normalizedX + normalizedY) * 0xffffff / 2);
 	
 		// Ensure the color is within the valid range
-		const validColor = Math.min(Math.max(newColor, 0), 0xffffff);
+		const validColor = Math.min(Math.max(newColor, 0), 0xff3f81);
 	
 		// Update the Vanta.js effect with the new color
 		vantaEffect.current.setOptions({

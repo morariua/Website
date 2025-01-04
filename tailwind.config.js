@@ -42,6 +42,13 @@ module.exports = {
 				"fade-left": "fade-left 3s ease-in-out forwards",
 				"fade-right": "fade-right 3s ease-in-out forwards",
 			},
+			backdropBlur: {
+				sm: '4px',
+				DEFAULT: '8px',
+				md: '12px',
+				lg: '16px',
+				xl: '24px',
+			  },
 			keyframes: {
 				"fade-in": {
 					"0%": {

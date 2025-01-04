@@ -5,6 +5,7 @@ import {
   DrawerContent,
   DrawerBody,
   DrawerFooter,
+  DrawerHeader,
   Button,
   useDisclosure,
   Card,
@@ -25,55 +26,74 @@ import React from 'react';
 
 export default function SkillsDrawer() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [backdrop, setBackdrop] = React.useState('blur');
+  const [placement, setPlacement] = React.useState('right');
+
+  const handleOpen = (placement) => {
+    setPlacement(placement);
+    onOpen();
+  };
 
   const skills = [
-    { title: 'Python', icon: <SiPython className="w-12 h-12 text-yellow-400" /> },
-    { title: 'React', icon: <SiReact className="w-12 h-12 text-blue-500" /> },
-    { title: 'Next.js', icon: <SiNextdotjs className="w-12 h-12 text-black dark:text-white" /> },
-    { title: 'Node.js', icon: <SiNodedotjs className="w-12 h-12 text-green-600" /> },
-    { title: 'TypeScript', icon: <SiTypescript className="w-12 h-12 text-blue-600" /> },
-    { title: 'Tailwind CSS', icon: <SiTailwindcss className="w-12 h-12 text-cyan-500" /> },
-    { title: 'Git', icon: <SiGit className="w-12 h-12 text-orange-600" /> },
+    { title: 'Python', icon: <SiPython className="w-6 h-6 text-yellow-400" /> },
+    { title: 'React', icon: <SiReact className="w-6 h-6 text-blue-500" /> },
+    { title: 'Next.js', icon: <SiNextdotjs className="w-6 h-6 text-black dark:text-white" /> },
+    { title: 'Node.js', icon: <SiNodedotjs className="w-6 h-6 text-green-600" /> },
+    { title: 'TypeScript', icon: <SiTypescript className="w-6 h-6 text-blue-600" /> },
+    { title: 'Tailwind CSS', icon: <SiTailwindcss className="w-6 h-6 text-cyan-500" /> },
+    { title: 'Git', icon: <SiGit className="w-6 h-6 text-orange-600" /> },
   ];
 
   return (
     <>
-      {/* Button to open the drawer */}
-      <Button
-        className="justify-between flex capitalize rounded-full hover:outline hover:outline-white"
-        color="primary"
-        variant="flat"
-        onPress={onOpen}
-      >
-        Skills
-      </Button>
+      {/* My Skills Button */}
+      <div className="flex flex-wrap gap-3">
+        {['right'].map((placement) => (
+          <Button
+            key={placement}
+            className="capitalize bg-[#18181b] rounded-lg hover:bg-[#696971] hover:outline-white focus:outline-none" // Remove focus outline
+            onPress={() => handleOpen(placement)}
+          >
+            My Skills
+          </Button>
+        ))}
+      </div>
 
       {/* Drawer */}
       <Drawer
         isOpen={isOpen}
+        placement={placement}
         onOpenChange={onOpenChange}
-        placement="right" // Slide in from the right
-        size="md" // Adjust the size to cover a quarter of the screen
-        backdrop="blur" // Blur the rest of the page
-        className="bg-gray-900 text-white" // Match the website's theme
-        style={{height: '100vh', width: '50vh'}}
+        backdrop="blur" // Ensure blur backdrop is applied
+        size="md" // Set drawer size to cover a quarter of the screen
+        className="fixed right-0 overflow-visible w-2/5 h-full backdrop-blur-md" // Ensure drawer stays on the right side
+        motionProps={{
+          variants: {
+            enter: {
+              opacity: 1,
+              x: 0, // Slide in from the right
+              transition: { duration: 0.3 },
+            },
+            exit: {
+              x: '100%', // Slide out to the right
+              opacity: 0,
+              transition: { duration: 0.3 },
+            },
+          },
+        }}
       >
-        <DrawerContent>
+        <DrawerContent className="bg-[#18181b] rounded-lg">
           {(onClose) => (
             <>
-              <DrawerBody>
-                <div className="grid grid-cols-2 gap-4">
+              <DrawerHeader className="flex flex-col gap-1 text-white">My Skills</DrawerHeader>
+              <DrawerBody className="overflow-y-auto"> {/* Add scroll option */}
+                <div className="flex flex-col gap-4"> {/* Vertical alignment */}
                   {skills.map((skill, index) => (
-                    <Card
-                      key={index}
-                      isPressable
-                      shadow="sm"
-                      className="bg-gray-800 text-white"
-                    >
+                    <Card key={index} isPressable shadow="sm" className="bg-gray-800 text-white">
                       <CardBody className="flex justify-center items-center p-4">
                         {skill.icon}
                       </CardBody>
-                      <CardFooter className="text-small justify-center">
+                      <CardFooter className="text-white text-small justify-center">
                         <b>{skill.title}</b>
                       </CardFooter>
                     </Card>
@@ -81,12 +101,7 @@ export default function SkillsDrawer() {
                 </div>
               </DrawerBody>
               <DrawerFooter>
-                <Button
-                  className="capitalize rounded-full hover:outline hover:outline-white"
-                  color="danger"
-                  variant="light"
-                  onPress={onClose}
-                >
+                <Button className="text-white rounded-md" color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
               </DrawerFooter>
