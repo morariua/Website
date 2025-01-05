@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "Alex Morariu",
     description:
       "Technical Consultant at Protiviti",
-    url: "https://chronark.com",
+    url: "",
     siteName: "Alex Morariu",
     images: [
       {
