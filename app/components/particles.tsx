@@ -40,25 +40,25 @@ export default function Particles({ className = "" }: ParticlesProps) {
     };
   }, []);
 
-  // Optional: Update Vanta.js effect based on mouse position
+  // Update Vanta.js effect based on mouse position
   useEffect(() => {
-	if (vantaEffect.current) {
-		// Calculate normalized mouse position
-		const normalizedX = mousePosition.x / window.innerWidth;
-		const normalizedY = mousePosition.y / window.innerHeight;
-	
-		// Generate a valid hexadecimal color value based on both X and Y
-		const newColor = Math.floor((normalizedX + normalizedY) * 0xffffff / 2);
-	
-		// Ensure the color is within the valid range
-		const validColor = Math.min(Math.max(newColor, 0), 0xff3f81);
-	
-		// Update the Vanta.js effect with the new color
-		vantaEffect.current.setOptions({
-		  color: validColor,
-		});
-	  }
-	}, [mousePosition.x, mousePosition.y]);
+    if (vantaEffect.current) {
+      // Calculate normalized mouse position
+      const normalizedX = mousePosition.x / window.innerWidth;
+      const normalizedY = mousePosition.y / window.innerHeight;
+
+      // Generate a valid hexadecimal color value based on both X and Y
+      const newColor = Math.floor((normalizedX + normalizedY) * 0xffffff / 2);
+
+      // Ensure the color is within the valid range
+      const validColor = Math.min(Math.max(newColor, 0), 0xffffff);
+
+      // Update the Vanta.js effect with the new color
+      vantaEffect.current.setOptions({
+        color: validColor,
+      });
+    }
+  }, [mousePosition.x, mousePosition.y]);
 
   return (
     <div className={className} ref={vantaRef} aria-hidden="true">

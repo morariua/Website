@@ -6,71 +6,41 @@ date: "2022-11-13"
 published: true
   
 ---
-A minimal library for access control. It is designed to be used together with opaque access tokens by providing a simple interface to define roles with different access permissions and verifying requests to resources.
 
-- Fully typed
-- Zero dependencies
-- Serializable to store in a database
 
-## Install
+# React To-Do List
 
-```sh-session
-npm i @chronark/access
-```
+Welcome to my React To-Do List project! This is a simple yet powerful to-do list application built with React. Below, you can find a live demo of the app and a link to the GitHub repository.
 
-## Usage
+## Live Demo
 
-```ts
-import { AccessControl, Role } from "@chronark/access";
+Check out the live demo of the React To-Do List:
 
-/**
- * Define all your resources and their access patterns
- *
- * key => resource
- * value => array of access types
- */
-type Statements = {
-  user: ["read", "write", "dance"];
-  team: ["read", "write"];
-};
+<iframe
+  src="https://react-todos.vercel.app"
+  width="100%"
+  height="500px"
+  style={{ border: 'none', borderRadius: '8px' }}
+  title="React To-Do List Demo"
+></iframe>
 
-/**
- * Create an access control instance and pass the Statements type to enjoy full
- * type safety
- */
-const ac = new AccessControl<Statements>();
+## GitHub Repository
 
-/**
- * Now you can define one or more roles by specifying the access permissions
- *
- * This is already fully typed and typescript will let you know if you try to
- * use anything, that is not defined in the Statements type.
- */
-const role = ac.newRole({
-  user: ["read", "write"],
-  team: ["read"],
-});
+You can find the source code for this project on GitHub:
 
-/**
- * Simulate storing and retrieving the role in a database
- *
- * The idea here is, that you can store permissions alongside an API token.
- * Now, when you verify the token, you can also verify the access permissions.
- */
-const serialized = role.toString();
+[View on GitHub](https://github.com/morariua/React-Todos)
 
-/**
- * Note how you can pass in the Statements type again, to get full type safety
- */
-const recovered = Role.fromString<Statements>(serialized);
+## Features
 
-/**
- * Validate the role by specifying the resource and the required access
- *
- * everything is fully typed
- */
-const res = recovered.authorize({"team", ["read"]});
+- Add, edit, and delete tasks.
+- Mark tasks as completed.
+- Responsive design for all devices.
+- Built with modern React practices.
 
-// res.success => boolean
-// res.error => string | undefined provides a reason for failure
-```
+## How to Run Locally
+
+If you'd like to run this project locally, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/morariua/React-Todos.git

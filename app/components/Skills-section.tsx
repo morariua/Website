@@ -8,9 +8,6 @@ import {
   DrawerHeader,
   Button,
   useDisclosure,
-  Card,
-  CardBody,
-  CardFooter,
 } from '@nextui-org/react';
 import {
   SiJavascript,
@@ -21,27 +18,50 @@ import {
   SiPython,
   SiTailwindcss,
   SiGit,
+  SiPytorch,
+  SiTensorflow,
+  SiScikitlearn,
 } from 'react-icons/si';
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+} from 'framer-motion';
+import { VscAzure, VscVscode } from 'react-icons/vsc';
+import { FaAws } from 'react-icons/fa';
 import React from 'react';
+import { Card } from '../components/card'; 
+import {ScrollShadow} from "@nextui-org/scroll-shadow";
 
 export default function SkillsDrawer() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [backdrop, setBackdrop] = React.useState('blur');
   const [placement, setPlacement] = React.useState('right');
 
-  const handleOpen = (placement) => {
+  const handleOpen = (placement: React.SetStateAction<string>) => {
     setPlacement(placement);
     onOpen();
   };
 
   const skills = [
+    // Python-related skills
     { title: 'Python', icon: <SiPython className="w-6 h-6 text-yellow-400" /> },
+    { title: 'PyTorch', icon: <SiPytorch className="w-6 h-6 text-red-600" /> },
+    { title: 'TensorFlow', icon: <SiTensorflow className="w-6 h-6 text-orange-500" /> },
+    { title: 'Scikit-learn', icon: <SiScikitlearn className="w-6 h-6 text-blue-400" /> },
+
+    // Version control
+    { title: 'Git', icon: <SiGit className="w-6 h-6 text-orange-600" /> },
+
+    // Web development
     { title: 'React', icon: <SiReact className="w-6 h-6 text-blue-500" /> },
     { title: 'Next.js', icon: <SiNextdotjs className="w-6 h-6 text-black dark:text-white" /> },
-    { title: 'Node.js', icon: <SiNodedotjs className="w-6 h-6 text-green-600" /> },
-    { title: 'TypeScript', icon: <SiTypescript className="w-6 h-6 text-blue-600" /> },
-    { title: 'Tailwind CSS', icon: <SiTailwindcss className="w-6 h-6 text-cyan-500" /> },
-    { title: 'Git', icon: <SiGit className="w-6 h-6 text-orange-600" /> },
+
+    // Cloud and tools
+    { title: 'Azure', icon: <VscAzure className="w-6 h-6 text-blue-600" /> },
+    { title: 'AWS', icon: <FaAws className="w-6 h-6 text-yellow-600" /> },
+    { title: 'VS Code', icon: <VscVscode className="w-6 h-6 text-blue-500" /> },
   ];
 
   return (
@@ -85,23 +105,26 @@ export default function SkillsDrawer() {
         <DrawerContent className="bg-[#18181b] rounded-lg">
           {(onClose) => (
             <>
-              <DrawerHeader className="flex flex-col gap-1 text-white">My Skills</DrawerHeader>
+              <DrawerHeader className="flex flex-col gap-1 border-none outline-none text-white">My Skills</DrawerHeader>
               <DrawerBody className="overflow-y-auto"> {/* Add scroll option */}
+              <ScrollShadow hideScrollBar></ScrollShadow>
                 <div className="flex flex-col gap-4"> {/* Vertical alignment */}
                   {skills.map((skill, index) => (
-                    <Card key={index} isPressable shadow="sm" className="bg-gray-800 text-white">
-                      <CardBody className="flex justify-center items-center p-4">
-                        {skill.icon}
-                      </CardBody>
-                      <CardFooter className="text-white text-small justify-center">
-                        <b>{skill.title}</b>
-                      </CardFooter>
+                    <Card key={index}> {/* Use the custom Card component */}
+                      <div className="p-4">
+                        <div className="flex justify-center items-center text-white">
+                          {skill.icon}
+                        </div>
+                        <div className="text-center mt-2 text-white">
+                          <b>{skill.title}</b>
+                        </div>
+                      </div>
                     </Card>
                   ))}
                 </div>
               </DrawerBody>
               <DrawerFooter>
-                <Button className="text-white rounded-md" color="danger" variant="light" onPress={onClose}>
+                <Button className="text-white rounded-md hover:outline-white" color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
               </DrawerFooter>
